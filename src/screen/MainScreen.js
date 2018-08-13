@@ -6,9 +6,14 @@ export default (MainScreen = props => (
     <View>
       <Text style={styles.Text}>You have to pay Rp.250000</Text>
       <Button
-        title="Pay now"
+        title="Pay with xendit now"
         style={styles.Button}
         onPress={() => props.navigation.navigate("Payment")}
+      />
+      <Button
+        title="Pay with stripe now"
+        style={styles.Button}
+        onPress={() => props.navigation.navigate("StripePayment")}
       />
     </View>
   </View>
