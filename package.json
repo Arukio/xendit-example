@@ -9,6 +9,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "base-64": "^0.1.0",
+    "qs": "^6.5.2",
+    "query-string": "^6.1.0",
     "react": "16.4.1",
     "react-native": "0.56.0",
     "react-navigation": "^2.11.2",

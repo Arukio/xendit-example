@@ -10,15 +10,16 @@ import {
   Button,
   WebView
 } from "react-native";
+import stripe from "../../lib/stripe";
 
 export default class Payment extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      cardNumber: "",
-      month: "",
-      year: "",
-      cvn: "",
+      cardNumber: "4242424242424242",
+      month: "12",
+      year: "2019",
+      cvn: "123",
       amount: "250000",
       isLoading: false,
       webViewUrl: "",
@@ -31,13 +32,21 @@ export default class Payment extends PureComponent {
   processPayment() {
     this.setState({ isLoading: true });
     const { cardNumber, month, year, amount, cvn } = this.state;
-    const data = {
-      amount: "250000",
-      card_number: "4000000000000002",
-      card_exp_month: "10",
-      card_exp_year: "2018",
-      card_cvn: "123"
+    const card = {
+      number: cardNumber,
+      exp_month: month,
+      exp_year: year,
+      cvc: cvn
     };
+    stripe
+      .createToken(card)
+      .then(data => {
+        this.setState({ isLoading: false });
+        this.props.navigation.navigate("StripePaymentProcess", {
+          data
+        });
+      })
+      .catch(err => console.log(err));
   }
 
   render() {
@@ -49,22 +58,26 @@ export default class Payment extends PureComponent {
             placeholder="Card Number"
             style={styles.CardInput}
             onChangeText={cardNumber => this.setState({ cardNumber })}
+            value={this.state.cardNumber}
           />
         </View>
         <View style={styles.CardInfoContainer}>
           <TextInput
             placeholder="month"
             style={styles.CardInfo}
+            value={this.state.month}
             onChangeText={month => this.setState({ month })}
           />
           <TextInput
             placeholder="year"
             style={styles.CardInfo}
+            value={this.state.year}
             onChangeText={year => this.setState({ year })}
           />
           <TextInput
             placeholder="cvn"
             style={styles.CardInfo}
+            value={this.state.cvn}
             onChangeText={cvn => this.setState({ cvn })}
           />
         </View>
